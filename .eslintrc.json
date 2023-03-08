@@ -11,7 +11,16 @@
   },
   "plugins": ["react"],
   "rules": {
+    "react/prop-types": "off",
     "react/react-in-jsx-scope": "off",
+    "import/no-extraneous-dependencies": [
+      "warn",
+      {
+        "devDependencies": false,
+        "optionalDependencies": false,
+        "peerDependencies": false
+      }
+    ],
     "prettier/prettier": "error",
     "import/order": [
       "error",
