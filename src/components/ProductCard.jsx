@@ -1,71 +1,87 @@
-import { Box, Heading, Image, Text, HStack, Tag, useColorModeValue } from '@chakra-ui/react';
+import { FiShoppingCart } from 'react-icons/fi';
 
-import cityColor from '../constants/constant';
+import {
+  Flex,
+  Box,
+  Image,
+  Badge,
+  useColorModeValue,
+  Icon,
+  chakra,
+  Tooltip,
+  useDisclosure,
+} from '@chakra-ui/react';
 
-function BlogTags({ tags, cityName }) {
+import ProductModal from './ProductModal';
+import { cityColor } from '../constants/constant';
+
+function ProductCard({ product, product: { idx, name, mainImage, price, spaceCategory } }) {
+  const { isOpen, onClose, onOpen } = useDisclosure();
   return (
-    <HStack spacing={2}>
-      {tags.map((tag) => {
-        return (
-          <Tag size="sm" variant="solid" colorScheme={cityColor[cityName]} key={tag}>
-            {tag}
-          </Tag>
-        );
-      })}
-    </HStack>
-  );
-}
-export default function ProductCard({ product: { idx, name, mainImage, price, spaceCategory } }) {
-  return (
-    <Box
-      marginTop={{ base: '1', sm: '5' }}
-      display="flex"
-      flexDirection={{ base: 'column', sm: 'row' }}
-      justifyContent="space-between"
-      width="65%"
+    <Flex
+      onClick={onOpen}
+      py={5}
+      w="250px"
+      alignItems="center"
+      justifyContent="center"
       margin="auto"
     >
-      <Box display="flex" flex="1" marginRight="3" position="relative" alignItems="center">
-        <Box
-          width={{ base: '100%', sm: '85%' }}
-          zIndex="2"
-          marginLeft={{ base: '0', sm: '5%' }}
-          marginTop="5%"
-        >
-          <Box>
-            <Image borderRadius="lg" src={mainImage} alt="some good alt text" objectFit="contain" />
-          </Box>
-        </Box>
-        <Box zIndex="1" width="100%" position="absolute" height="100%">
-          <Box
-            bgGradient={useColorModeValue(
-              'radial(orange.600 1px, transparent 1px)',
-              'radial(orange.300 1px, transparent 1px)',
-            )}
-            backgroundSize="20px 20px"
-            opacity="0.4"
-            height="100%"
-          />
-        </Box>
-      </Box>
+      <ProductModal isOpen={isOpen} onClose={onClose} product={product} />
       <Box
-        display="flex"
-        flex="1"
-        flexDirection="column"
-        justifyContent="center"
-        marginTop={{ base: '3', sm: '0' }}
+        bg={useColorModeValue('white', 'gray.800')}
+        width="80%"
+        borderWidth="1px"
+        rounded="lg"
+        shadow="lg"
+        position="relative"
       >
-        <BlogTags tags={[spaceCategory]} cityName={spaceCategory} />
-        <Heading marginTop="1" as="h4" size="sm">
-          <Text>{name}</Text>
-        </Heading>
-        <Text as="p" marginTop="2" color={useColorModeValue('black.100', 'gray.200')} fontSize="xs">
-          {price}
-        </Text>
-        <Text fontSize="10px" color={useColorModeValue('gray.800', 'gray.500')}>
-          {idx}
-        </Text>
+        <Image src={mainImage} alt={`Picture of ${name}`} roundedTop="lg" />
+
+        <Box p="3">
+          <Box d="flex" alignItems="baseline">
+            <Badge rounded="full" px="2" fontSize="0.6em" colorScheme="grey">
+              {idx}
+            </Badge>
+            <Badge rounded="full" px="2" fontSize="0.6em" colorScheme={cityColor[spaceCategory]}>
+              {spaceCategory}
+            </Badge>
+          </Box>
+          <Flex mt="1" justifyContent="space-between" alignContent="center">
+            <Box
+              mr="5px"
+              fontSize="12px"
+              fontWeight="semibold"
+              as="h4"
+              lineHeight="tight"
+              isTruncated
+            >
+              {name}
+            </Box>
+            <Tooltip
+              label="Add to cart"
+              bg="white"
+              placement="top"
+              color="gray.800"
+              fontSize="1.2em"
+            >
+              <chakra.a href="#" display="flex">
+                <Icon as={FiShoppingCart} h={5} w={5} alignSelf="center" />
+              </chakra.a>
+            </Tooltip>
+          </Flex>
+
+          <Flex justifyContent="space-between" alignContent="center">
+            <Box fontSize="sm" color={useColorModeValue('gray.800', 'white')}>
+              <Box as="span" color="gray.600" fontSize="md">
+                ￦
+              </Box>
+              {price.toLocaleString()}
+            </Box>
+          </Flex>
+        </Box>
       </Box>
-    </Box>
+    </Flex>
   );
 }
+
+export default ProductCard;
