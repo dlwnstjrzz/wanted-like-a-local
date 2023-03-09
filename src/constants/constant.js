@@ -5,5 +5,19 @@ const cityColor = {
   대구: 'purple',
   제주: 'pink',
 };
-
-export default cityColor;
+const cityNames = ['강원', '서울', '부산', '대구', '제주'];
+const price = [
+  {
+    minPrice: 0,
+    maxPrice: 15000,
+  },
+  {
+    minPrice: 15000,
+    maxPrice: 30000,
+  },
+  {
+    minPrice: 30000,
+    maxPrice: Infinity,
+  },
+];
+export { cityColor, cityNames, price };
